@@ -1,11 +1,12 @@
 const { Router } = require ('express');
 const  router = Router();
-const Marcas = require ('../models/Marcas');
+const Marca = require ('../models/Marca');
+
 
 
 router.get('/', async function (req,res){
     try {
-        const marcas = await Marcas.find();
+        const marcas = await Marca.find();
         res.send (marcas);
         
     } catch (error) {
@@ -17,7 +18,8 @@ router.get('/', async function (req,res){
 
 router.post('/',async function (req,res){
     try {
-        let marca =new Marcas();
+        
+        let marca =new Marca();
         marca.nombre= req.body.nombre;
         marca.estado = req.body.estado;
         marca.fechaCreacion = new Date ();
@@ -25,21 +27,26 @@ router.post('/',async function (req,res){
         marca = await marca.save();
         res.send(marca);
 
-    } catch (error) {
+   } catch (error) {
         console.log(error);
         res.send('ocrrio un error')
         
-    }
+   }
 });
 
-router.put('/marcaId',async function (req,res){
+router.put('/marcaId',async function (req,res) {
     try {
-        let marca = await Marcas.findById(req.params.marcaId);
+        let marca = await Marca.findById(req.params.marcaId);
         if(!marca){
             return res.send('la marca no existe ');
         }
+
+        
+        
+
         marca.nombre= req.body.nombre;
         marca.estado = req.body.estado;
+        marca.fechaCreacion = new Date ();
         marca.fechaDeActualizacion = new Date()
         marca = await marca.save();
 
